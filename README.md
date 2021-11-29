@@ -2,10 +2,10 @@
 Miniproject assignment for PX913 as part of HetSys CDT at the University of Warwick
 
 ## Installation 
-tbd
+Probably a shell script m8
 
 ## Usage
-tbd
+Who knows m8
 
 ## Contributors 
 Dylan Morgan, Matyas Parrag, and Jeremey Thorn

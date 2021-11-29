@@ -10,4 +10,4 @@ Dylan Morgan, Matyas Parrag, and Jeremey Thorn
 
 Institution: University of Warwixk 
 
-Copyright © 2021, Dylan Morgan, Matyas Parrag, and Jeremey Thorn
+Copyright © 2021, Dylan Morgan, Matyas Parrag, and Jeremy Thorn

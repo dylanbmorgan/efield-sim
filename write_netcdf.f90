@@ -10,16 +10,15 @@ MODULE write_netcdf
         ! Large amounts of this subroutine were taken from the example given in Workshop 7.
         SUBROUTINE write_array(phi, rho, E_x, E_y, r, v, a, filename)
             ! The final frame of the world array
-            REAL(REAL64), INTENT(IN), DIMENSION(:,:) :: phi, rho, E_x, E_y
-            REAL(REAL64), INTENT(IN), DIMENSION(:) :: r, v, a
+            REAL(REAL64), INTENT(IN), DIMENSION(:,:) :: phi, rho, E_x, E_y,r, v, a
 
             ! The number of dimensions to include in the netcdf file
-            INTEGER, PARAMETER :: ndims = 11
+            INTEGER, PARAMETER :: ndims = 14
             ! Arrays to store the sizes and ids of the dimensions.
             INTEGER, DIMENSION(ndims) :: sizes, dim_ids
             ! The names of the dimensions themselves
             CHARACTER(5), DIMENSION(ndims) :: dims = ['phi_x', 'phi_y', 'rho_x', 'rho_y', 'E_x_x', &
-             'E_x_y', 'E_y_x', 'E_y_y', 'r    ', 'v    ', 'a    ']
+             'E_x_y', 'E_y_x', 'E_y_y', 'r_x  ', 'r_y  ', 'v_x  ', 'v_y  ', 'a_x  ', 'a_y  ']
             ! The filename for the netcdf
             CHARACTER(*), INTENT(IN) :: filename
             ! Error code varaibles and ids
@@ -31,9 +30,9 @@ MODULE write_netcdf
             sizes(3:4) = SHAPE(rho)
             sizes(5:6) = SHAPE(E_x)
             sizes(7:8) = SHAPE(E_y)
-            sizes(9) = SIZE(r)
-            sizes(10) = SIZE(v)
-            sizes(11) = SIZE(a)
+            sizes(9:10) = SIZE(r)
+            sizes(11:12) = SIZE(v)
+            sizes(13:14) = SIZE(a)
 
             ! Create the file, overwriting if it exists
             ierr = nf90_create(filename, NF90_CLOBBER, file_id)
@@ -82,19 +81,19 @@ MODULE write_netcdf
                 RETURN
             END IF
 
-            ierr = nf90_def_var(file_id, "r_hist", NF90_REAL, dim_ids(9), r_var_id)
+            ierr = nf90_def_var(file_id, "r_hist", NF90_REAL, dim_ids(9:10), r_var_id)
             IF (ierr /= nf90_noerr) THEN
                 PRINT*, TRIM(nf90_strerror(ierr))
                 RETURN
             END IF
 
-            ierr = nf90_def_var(file_id, "v_hist", NF90_REAL, dim_ids(10), v_var_id)
+            ierr = nf90_def_var(file_id, "v_hist", NF90_REAL, dim_ids(11:12), v_var_id)
             IF (ierr /= nf90_noerr) THEN
                 PRINT*, TRIM(nf90_strerror(ierr))
                 RETURN
             END IF
 
-            ierr = nf90_def_var(file_id, "a_hist", NF90_REAL, dim_ids(11), a_var_id)
+            ierr = nf90_def_var(file_id, "a_hist", NF90_REAL, dim_ids(13:14), a_var_id)
             IF (ierr /= nf90_noerr) THEN
                 PRINT*, TRIM(nf90_strerror(ierr))
                 RETURN

@@ -1,10 +1,10 @@
-MODULE gauss_seidel
+MODULE gauss_seidel_errors
     USE ISO_FORTRAN_ENV
     IMPLICIT NONE
-    
-    
+
+
 CONTAINS
-    FUNCTION e_tot(phi, rho, dx, dy) 
+    FUNCTION e_tot(phi, rho, dx, dy)
         REAL(REAL64), INTENT(IN), DIMENSION(:,:) :: phi, rho
         REAL(REAL64), INTENT(IN) :: dx, dy
         REAL(REAL64) :: e_tot
@@ -19,10 +19,10 @@ CONTAINS
                 (phi(i,j-1)-2*phi(i,j)+phi(i,j+1))/(dy*dy) - rho(i,j))
             END DO
         END DO
-    
+
     END FUNCTION e_tot
 
-    FUNCTION d_rms(phi, dx, dy) 
+    FUNCTION d_rms(phi, dx, dy)
         REAL(REAL64), INTENT(IN), DIMENSION(:,:) :: phi
         REAL(REAL64), INTENT(IN) :: dx, dy
         REAL(REAL64) :: d_rms, N
@@ -42,7 +42,7 @@ CONTAINS
         END DO
 
         d_rms = SQRT(1/N * d_rms)
-    
+
     END FUNCTION d_rms
 
-END MODULE gauss_seidel
+END MODULE gauss_seidel_errors

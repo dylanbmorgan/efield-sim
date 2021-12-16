@@ -1,11 +1,8 @@
+!For usage of this module look at test_nc
 MODULE write_netcdf
     USE iso_fortran_env
     USE netcdf
     IMPLICIT NONE
-
-    ! This type contains all the parameters input by the user when they run the
-    ! game of life program. It also contains the name of the program so that the
-    ! netcdf file can be traced to a source.
 
     CONTAINS
 
@@ -37,7 +34,6 @@ MODULE write_netcdf
             sizes(9) = SIZE(r)
             sizes(10) = SIZE(v)
             sizes(11) = SIZE(a)
-            ! NOW ENTERING THE CODE FROM WORKSHOP 7 (MY COMMENTS FROM NOW ON WILL BE IN CAPS):
 
             ! Create the file, overwriting if it exists
             ierr = nf90_create(filename, NF90_CLOBBER, file_id)
@@ -61,7 +57,7 @@ MODULE write_netcdf
                 END IF
             END DO
 
-            ! DEFINE THE 2D GRID DATA VARAIBLE
+            ! define the varaibles
             ierr = nf90_def_var(file_id, "phi_grid_data", NF90_REAL, dim_ids(1:2), phi_var_id)
             IF (ierr /= nf90_noerr) THEN
                 PRINT*, TRIM(nf90_strerror(ierr))
@@ -86,7 +82,6 @@ MODULE write_netcdf
                 RETURN
             END IF
 
-            ! DEFINE THE 1D TIME HISTORY VARIABLE
             ierr = nf90_def_var(file_id, "r_hist", NF90_REAL, dim_ids(9), r_var_id)
             IF (ierr /= nf90_noerr) THEN
                 PRINT*, TRIM(nf90_strerror(ierr))

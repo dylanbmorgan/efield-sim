@@ -1,7 +1,7 @@
 import netCDF4 as nc
 import matplotlib.pyplot as plt
 
-dataset = nc.Dataset("Test_Nc")
+dataset = nc.Dataset("RHO_TEST")
 
 phi_grid_data = dataset["phi_grid_data"][:]
 rho_grid_data = dataset["rho_grid_data"][:]
@@ -10,8 +10,7 @@ E_y_grid_data = dataset["E_y_grid_data"][:]
 r_hist = dataset["r_hist"][:]
 
 
-
-
+print(r_hist)
 fig, axs = plt.subplots(3,figsize=(5, 5))
 fig.tight_layout()
 fig.canvas.set_window_title("E-Field Sim")

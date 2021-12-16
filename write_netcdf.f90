@@ -30,9 +30,11 @@ MODULE write_netcdf
             sizes(3:4) = SHAPE(rho)
             sizes(5:6) = SHAPE(E_x)
             sizes(7:8) = SHAPE(E_y)
-            sizes(9:10) = SIZE(r)
-            sizes(11:12) = SIZE(v)
-            sizes(13:14) = SIZE(a)
+            sizes(9:10) = SHAPE(r)
+            sizes(11:12) = SHAPE(v)
+            sizes(13:14) = SHAPE(a)
+
+            PRINT*,SIZES
 
             ! Create the file, overwriting if it exists
             ierr = nf90_create(filename, NF90_CLOBBER, file_id)

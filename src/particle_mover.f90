@@ -27,24 +27,23 @@ contains
 
   end subroutine calc_forces
 
-  subroutine velocity_verlet(E_x, E_y, dx, dy, v, nx, ny)
+  subroutine velocity_verlet(E_x, E_y, dx, dy, nx, ny, v_x, v_y, part_x, part_y)
     !> Move the particle using the velocity verlet algorithm
 
-    real(dp) :: dt, q, a_x0, a_y0, a_x, a_y, a_xn, a_yn, v_x, v_y
-    real(dp), dimension(:,:) :: pos_hist, vel_hist, acc_hist
-    integer :: iters, cell_pos_x, cell_pos_y, time_step
     real(dp), dimension(:,:), intent(in) :: E_x, E_y
+    real(dp), dimension(:,:) :: pos_hist, vel_hist, acc_hist
+    real(dp), intent(in) :: v_x, v_y, part_x, part_y
+    real(dp) :: dt, q, a_x0, a_y0, a_x, a_y, a_xn, a_yn
     integer, intent(in) :: dx, dy, nx, ny
-    real(dp), intent(in) :: v
+    integer :: iters, cell_pos_x, cell_pos_y, time_step
 
     iters = 1000  ! Number of iterations
     dt = 0.01_dp  ! Time step
     q = -1.0_dp  ! Charge
 
-    ! Find cell position
-    cell_pos_x = floor((part_x - 1.0_dp) / dx) + 1
-    cell_pos_y = floor((part_y - 1.0_dp) / dy) + 1
-    ! TODO What is part_x and part_y???
+    ! Find initial cell position
+    cell_pos_x = floor((part_x - 1.0_dp) / dx) + 1.0_dp
+    cell_pos_y = floor((part_y - 1.0_dp) / dy) + 1.0_dp
 
     ! Lorentz force equation
     ! The field is taken at the location of the particle
@@ -54,17 +53,19 @@ contains
 
     a_x = a_x0
     a_y = a_y0
-    v_x = v
-    v_y = v
 
     allocate(pos_hist(iters, 2))
     allocate(vel_hist(iters, 2))
     allocate(acc_hist(iters, 2))
 
     do time_step = 1, iters
+      ! Find cell position
+      cell_pos_x = floor((part_x - 1.0_dp) / dx) + 1
+      cell_pos_y = floor((part_y - 1.0_dp) / dy) + 1
+
       ! Position
-      cell_pos_x = cell_pos_x + v_x*dt + ((a_x / 2.0_dp) * dt**2)
-      cell_pos_y = cell_pos_y + v_y*dt + ((a_y / 2.0_dp) * dt**2)
+      part_x = part_x + v_x*dt + ((a_x / 2.0_dp) * dt**2)
+      part_y = part_y + v_y*dt + ((a_y / 2.0_dp) * dt**2)
       ! TODO Check if squared values should be ints or dp
 
       ! Acceleration

@@ -13,28 +13,31 @@ contains
     !>@param dx x length of cell
     !>@param dy y length of cell
 
+    real(dp), dimension(:,:), allocatable :: E_x, E_y
     real(dp), dimension(:,:), intent(in) :: phi
-    real(dp), dimension(:,:) :: E_x, E_y
     real(dp), intent(in) :: dx, dy
     integer :: i, j, nx, ny
 
+    allocate(E_x(nx, ny))
+    allocate(E_y(nx, ny))
+
     do i = 1, nx
       do j = 1, ny
-        E_x(i, j) = (phi(i+2, j+1) - phi(i, j+1)) / 2 * dx
-        E_y(i, j) = (phi(i+1, j+2) - phi(i+1, j)) / 2 * dy
+        E_x(i, j) = (phi(i+2, j+1) - phi(i, j+1)) / 2.0_dp * dx
+        E_y(i, j) = (phi(i+1, j+2) - phi(i+1, j)) / 2.0_dp * dy
       end do
     end do
 
   end subroutine calc_forces
 
-  subroutine velocity_verlet(E_x, E_y, dx, dy, nx, ny, v_x, v_y, part_x, part_y)
+  subroutine velocity_verlet(E_x, E_y, dx, dy, v_x, v_y, p_x, p_y)
     !> Move the particle using the velocity verlet algorithm
 
+    real(dp), dimension(:,:), allocatable :: pos_hist, vel_hist, acc_hist
     real(dp), dimension(:,:), intent(in) :: E_x, E_y
-    real(dp), dimension(:,:) :: pos_hist, vel_hist, acc_hist
-    real(dp), intent(in) :: v_x, v_y, part_x, part_y
+    real(dp), intent(inout) :: v_x, v_y, p_x, p_y
     real(dp) :: dt, q, a_x0, a_y0, a_x, a_y, a_xn, a_yn
-    integer, intent(in) :: dx, dy, nx, ny
+    integer, intent(in) :: dx, dy
     integer :: iters, cell_pos_x, cell_pos_y, time_step
 
     iters = 1000  ! Number of iterations
@@ -42,8 +45,8 @@ contains
     q = -1.0_dp  ! Charge
 
     ! Find initial cell position
-    cell_pos_x = floor((part_x - 1.0_dp) / dx) + 1.0_dp
-    cell_pos_y = floor((part_y - 1.0_dp) / dy) + 1.0_dp
+    cell_pos_x = floor((p_x - 1.0_dp) / dx) + 1.0_dp
+    cell_pos_y = floor((p_y - 1.0_dp) / dy) + 1.0_dp
 
     ! Lorentz force equation
     ! The field is taken at the location of the particle
@@ -60,13 +63,12 @@ contains
 
     do time_step = 1, iters
       ! Find cell position
-      cell_pos_x = floor((part_x - 1.0_dp) / dx) + 1
-      cell_pos_y = floor((part_y - 1.0_dp) / dy) + 1
+      cell_pos_x = floor((p_x - 1.0_dp) / dx) + 1
+      cell_pos_y = floor((p_y - 1.0_dp) / dy) + 1
 
       ! Position
-      part_x = part_x + v_x*dt + ((a_x / 2.0_dp) * dt**2)
-      part_y = part_y + v_y*dt + ((a_y / 2.0_dp) * dt**2)
-      ! TODO Check if squared values should be ints or dp
+      p_x = p_x + v_x*dt + ((a_x / 2.0_dp) * dt**2)
+      p_y = p_y + v_y*dt + ((a_y / 2.0_dp) * 2**dt)
 
       ! Acceleration
       a_xn = a_x
@@ -79,15 +81,13 @@ contains
       v_y = v_y + dt*((a_y + a_yn) / 2.0_dp)
 
       ! Save histories
-      pos_hist(time_step, 1) = cell_pos_x
-      pos_hist(time_step, 2) = cell_pos_y
+      pos_hist(time_step, 1) = p_x
+      pos_hist(time_step, 2) = p_y
       vel_hist(time_step, 1) = a_x
       vel_hist(time_step, 2) = a_y
       acc_hist(time_step, 1) = v_x
       acc_hist(time_step, 2) = v_y
     end do
-
-    ! TODO Check if any double precisions should be returned to ints
 
   end subroutine velocity_verlet
 

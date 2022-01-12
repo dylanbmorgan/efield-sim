@@ -1,88 +1,92 @@
-PROGRAM main
-  USE ISO_FORTRAN_ENV
-  USE gauss_seidel
-  USE gauss_seidel_errors
-  USE write_netcdf
-  USE useful_funcs
-  USE command_line
-  IMPLICIT NONE
+program main
+  use iso_fortran_env
+  use gauss_seidel
+  use gauss_seidel_errors
+  use write_netcdf
+  use useful_funcs
+  use command_line
+  use particle_mover
+  implicit none
 
-  ! Defining variables (not all yet)
-  LOGICAL :: success
-  INTEGER :: nx,ny,i,j
-  CHARACTER(10) :: problem
-  REAL(KIND=REAL64), DIMENSION(:,:),ALLOCATABLE :: rho
-  REAL(KIND=REAL64) :: v_x, v_y, p_x, p_y
+  ! defining variables (not all yet)
+  logical :: success
+  integer :: nx,ny,i,j
+  character(10) :: problem
+  real(kind=real64), dimension(:,:),allocatable :: rho
+  real(kind=real64) :: v_x, v_y, p_x, p_y
 
-  CALL parse_args
+  call parse_args
 
-  ! Getting command line args and dealing with missing or
+  ! getting command line args and dealing with missing or
   ! invalid inputs
   success = get_arg("nx", nx)
 
-  IF(.not. success) THEN
-    PRINT*, "Failed to read nx"
-    RETURN
-  END IF
+  if(.not. success) then
+    print*, "failed to read nx"
+    return
+  end if
 
 
   success = get_arg("ny", ny)
 
-  IF(.not. success) THEN
-    PRINT*, "Failed to read ny"
-    RETURN
-  END IF
+  if(.not. success) then
+    print*, "failed to read ny"
+    return
+  end if
 
   success = get_arg("problem", problem)
 
-  IF(.not. success) THEN
-    PRINT*, "Failed to read problem"
-    RETURN
-  END IF
+  if(.not. success) then
+    print*, "failed to read problem"
+    return
+  end if
 
-  ALLOCATE(rho(nx + 2,ny + 2))
-  ! Initialise based on "problem"
-  IF(problem == "null") THEN
-    rho = 0_REAL64
-    v_x = 0.1_REAL64
-    v_y = 0.1_REAL64
-    p_x = 0_REAL64
-    p_y = 0_REAL64
-  ELSE IF(problem == "single") THEN
-    DO i=2,nx-1
-      DO j=2,ny-1
-        rho(i,j)=EXP(-(i_to_x(i,nx)/0.1)*(i_to_x(i,nx)/0.1)&
+  allocate(rho(nx + 2,ny + 2))
+  ! initialise based on "problem"
+  if(problem == "null") then
+    rho = 0_real64
+    v_x = 0.1_real64
+    v_y = 0.1_real64
+    p_x = 0_real64
+    p_y = 0_real64
+  else if(problem == "single") then
+    do i=2,nx-1
+      do j=2,ny-1
+        rho(i,j)=exp(-(i_to_x(i,nx)/0.1)*(i_to_x(i,nx)/0.1)&
         -(j_to_y(j,ny)/0.1)*(j_to_y(j,ny)/0.1))
-      END DO
-    END DO
-    v_x = 0.0_REAL64
-    v_y = 0.0_REAL64
-    p_x = 0.1_REAL64
-    p_y = 0_REAL64
+      end do
+    end do
+    v_x = 0.0_real64
+    v_y = 0.0_real64
+    p_x = 0.1_real64
+    p_y = 0_real64
 
-  ELSE IF(problem == "double") THEN
-    DO i=2,nx-1
-      DO j=2,ny-1
-        rho(i,j)=EXP(-((i_to_x(i,nx)+0.25)/0.1)*((i_to_x(i,nx)+0.25)/0.1)&
-        -((j_to_y(j,ny)+0.25)/0.1)*((j_to_y(j,ny)+0.25)/0.1))+EXP(-((i_to_x(i,nx)&
+  else if(problem == "double") then
+    do i=2,nx-1
+      do j=2,ny-1
+        rho(i,j)=exp(-((i_to_x(i,nx)+0.25)/0.1)*((i_to_x(i,nx)+0.25)/0.1)&
+        -((j_to_y(j,ny)+0.25)/0.1)*((j_to_y(j,ny)+0.25)/0.1))+exp(-((i_to_x(i,nx)&
         -0.75)/0.2)*((i_to_x(i,nx)-0.75)/0.2)-((j_to_y(j,ny)-0.75)/0.2)*((j_to_y(j,ny)-0.75)/0.2))
-      END DO
-    END DO
-    v_x = 0.0_REAL64
-    v_y = 0.0_REAL64
-    p_x = 0_REAL64
-    p_y = 0.5_REAL64
-  ELSE
-    PRINT*, "problem was not recognised"
-    RETURN
-  END IF
+      end do
+    end do
+    v_x = 0.0_real64
+    v_y = 0.0_real64
+    p_x = 0_real64
+    p_y = 0.5_real64
+  else
+    print*, "problem was not recognised"
+    return
+  end if
 
 
-  !Need put the programm together from modules
-  call write_array(rho,rho,rho,rho,rho,rho,rho,"RHO_TEST")
+  !need put the program together from modules
+  call write_array(rho,rho,rho,rho,rho,rho,rho,"rho_test")
 
+  call calc_forces(phi, nx, ny, dx, dy)
 
+  call velocity_verlet(E_x, E_y, dx, dy, v_x, v_y, p_x, p_y)
 
+  ! TODO Write to netcdf
+  ! TODO Helper module
 
-
-END PROGRAM main
+end program main

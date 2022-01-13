@@ -5,6 +5,9 @@ module gauss_seidel_errors
 ! These functions are used to calculate the error on a given gauss seidel iteration.
 
 contains
+    ! This function calculates the convergence error of the current gauss seidel
+    ! iteration. It is proportional to the magnitude of the gradients. To remove
+    ! this dependency, e_tot should always be divided by d_rms (see below).
     function e_tot(phi, rho, dx, dy)
         real(dp), intent(in), dimension(:,:) :: phi, rho
         real(dp), intent(in) :: dx, dy
@@ -23,6 +26,8 @@ contains
 
     end function e_tot
 
+    ! This function calculates the root-mean-square of the second derivative of
+    ! the potential. 
     function d_rms(phi, dx, dy)
         real(dp), intent(in), dimension(:,:) :: phi
         real(dp), intent(in) :: dx, dy

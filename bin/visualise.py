@@ -1,7 +1,7 @@
 import netCDF4 as nc
 import matplotlib.pyplot as plt
 
-dataset = nc.Dataset("RHO_TEST")
+dataset = nc.Dataset("rho_test")
 
 phi_grid_data = dataset["phi_grid_data"][:]
 rho_grid_data = dataset["rho_grid_data"][:]

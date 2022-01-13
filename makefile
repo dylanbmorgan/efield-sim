@@ -1,13 +1,13 @@
 make:
-	gfortran gauss-seidel_errors.f90 gauss_seidel.f90 write_netcdf.f90 command_line.f90 useful_funcs.f90 main.f90 -o e_sim `nf-config --fflags --flibs`
-	./e_sim nx=1000 ny=1000 problem="double"
-	python visualise.py
+	gfortran src/gauss-seidel_errors.f90 src/gauss_seidel.f90 src/write_netcdf.f90 src/command_line.f90 src/useful_funcs.f90 src/main.f90 -o bin/e_sim `nf-config --fflags --flibs`
+	./bin/e_sim nx=1000 ny=1000 problem="double"
+	python bin/visualise.py
 test_gs:
-	gfortran gauss-seidel_errors.f90 gauss_seidel.f90 gs_test.f90 -o test_gs
-	./test_gs
+	gfortran src/gauss-seidel_errors.f90 src/gauss_seidel.f90 test/gs_test.f90 -o bin/test_gs
+	./bin/test_gs
 test_nc:
-	gfortran write_netcdf.f90 test_nc.f90 -o test_nc `nf-config --fflags --flibs`
-	./test_nc
+	gfortran src/write_netcdf.f90 test/test_nc.f90 -o bin/test_nc `nf-config --fflags --flibs`
+	./bin/test_nc
 clean :
 	 -rm test_gs
 	 -rm test_nc

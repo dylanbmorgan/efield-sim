@@ -23,7 +23,7 @@ fi
 # Compile
 program_files="./src/gauss-seidel_errors.f90 ./src/gauss_seidel.f90
 ./src/write_netcdf.f90 ./src/command_line.f90 ./src/useful_funcs.f90
-./src/particle_mover.f90"
+./src/particle_mover.f90 ./src/main.f90"
 
 flibs=`nf-config --flibs`
 fflags=`nf-config --fflags`
@@ -35,4 +35,4 @@ $cf $fflags -J$src $program_files $flibs -o $comp_file -I$bin
 
 # Run
 $comp_file nx=100 ny=100 problem="single"
-$bin/visualise.py
+python $bin/visualise.py

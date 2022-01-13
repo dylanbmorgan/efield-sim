@@ -82,9 +82,9 @@ program main
   !need put the program together from modules
   call write_array(rho,rho,rho,rho,rho,rho,rho,"rho_test")
 
-  call calc_forces(phi, nx, ny, dx, dy)
+  !call calc_forces(phi, nx, ny, dx, dy)
 
-  call velocity_verlet(E_x, E_y, dx, dy, v_x, v_y, p_x, p_y)
+  !call velocity_verlet(E_x, E_y, dx, dy, v_x, v_y, p_x, p_y)
 
   ! TODO Write to netcdf
   ! TODO Helper module

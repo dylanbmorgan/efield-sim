@@ -2,7 +2,7 @@
 
 import netCDF4 as nc
 import matplotlib.pyplot as plt
-import numpy as np
+# import numpy as np
 
 dataset = nc.Dataset("output.nc")
 

@@ -2,7 +2,9 @@
 Miniproject assignment for PX913 as part of HetSys CDT at the University of Warwick. This program simulates the movement of a particle through an electric field that the particle doesn't influence.
 
 ## Install and Compile 
-This can be installed on any system with git installed using the command `git clone https://github.com/dylanbmorgan/efield-sim` 
+This can be installed on any system with git installed using the command:
+
+`git clone https://github.com/dylanbmorgan/efield-sim` 
 
 Compilation and running the program is handled by the bash shell script `esim.sh`. To compile the program: 
 
@@ -19,8 +21,8 @@ The syntax for setting these parameters is outlined as follows:
 
 
 ## Contributors 
-Dylan Morgan, Matyas Parrag, and Jeremey Thorn
+Dylan Morgan, Matyas Parrag, and Jeremy Thorn
 
 Institution: University of Warwick 
 
-Copyright © 2021, Dylan Morgan, Matyas Parrag, and Jeremy Thorn
+Copyright © 2021-2022, Dylan Morgan, Matyas Parrag, and Jeremy Thorn

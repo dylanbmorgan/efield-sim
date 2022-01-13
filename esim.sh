@@ -63,6 +63,7 @@ if [[ $# -eq 0 ]]; then
     compile
   fi
 
+  comp_file="./bin/esim"  # This has to be defined again
   run
 
 elif [[ $# -eq 1 ]]; then

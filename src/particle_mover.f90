@@ -32,8 +32,8 @@ contains
     real(dp), intent(in) :: dx, dy
     integer :: iters, cell_pos_x, cell_pos_y, time_step
 
-    iters = 100000  ! Number of iterations
-    dt = 0.001_dp  ! Time step
+    iters = 10000  ! Number of iterations
+    dt = 0.01_dp  ! Time step
     q = -1.0_dp  ! Charge
 
     ! Find initial cell position
@@ -60,6 +60,9 @@ contains
       cell_pos_x = floor((p_x + 1.0_dp) / dx) + 1
       cell_pos_y = floor((p_y + 1.0_dp) / dy) + 1
 
+      if(cell_pos_y > size(E_x(1,:)) .or. cell_pos_x > size(E_x(:,1))) then
+        exit
+      end if
       ! Position
       p_x = p_x + v_x*dt + ((a_x / 2.0_dp) * dt**2)
       p_y = p_y + v_y*dt + ((a_y / 2.0_dp) * dt**2)

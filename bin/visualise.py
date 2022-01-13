@@ -2,6 +2,7 @@
 
 import netCDF4 as nc
 import matplotlib.pyplot as plt
+import numpy as np
 
 dataset = nc.Dataset("rho_test")
 
@@ -12,8 +13,9 @@ E_y_grid_data = dataset["E_y_grid_data"][:]
 r_hist = dataset["r_hist"][:]
 
 
-print(r_hist)
-fig, axs = plt.subplots(3,figsize=(5, 5))
+plt.show()
+
+fig, axs = plt.subplots(3,figsize=(6,12), gridspec_kw={'height_ratios': [1,1 ,2]})
 fig.tight_layout()
 fig.canvas.set_window_title("E-Field Sim")
 
@@ -29,6 +31,7 @@ axs[2].title.set_text("Path of particle")
 axs[2].plot(r_hist[0], r_hist[1])
 axs[2].set_xlabel("x")
 axs[2].set_ylabel("y")
-
+axs[2].set_xlim(-1,1)
+axs[2].set_ylim(-1,1)
 
 plt.show()

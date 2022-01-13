@@ -12,8 +12,9 @@ program main
   logical :: success
   integer :: nx,ny,i,j
   character(10) :: problem
-  real(kind=real64), dimension(:,:),allocatable :: rho
-  real(kind=real64) :: v_x, v_y, p_x, p_y
+  real(kind=real64), dimension(:,:),allocatable :: rho, E_x, E_y, phi, part_hist,&
+   vel_hist, acc_hist
+  real(kind=real64) :: v_x, v_y, p_x, p_y, dx, dy, errors, out_etot,out_d_rms
 
   call parse_args
 
@@ -42,6 +43,17 @@ program main
   end if
 
   allocate(rho(nx + 2,ny + 2))
+  allocate(phi(nx + 2,ny + 2))
+  allocate(E_x(nx,ny))
+  allocate(E_y(nx,ny))
+
+  phi = 0.0
+  E_x = 0.0
+  E_y = 0.0
+
+  dx = 2.0_dp / nx
+  dy = 2.0_dp / ny
+
   ! initialise based on "problem"
   if(problem == "null") then
     rho = 0_real64
@@ -50,8 +62,8 @@ program main
     p_x = 0_real64
     p_y = 0_real64
   else if(problem == "single") then
-    do i=2,nx-1
-      do j=2,ny-1
+    do i=2,nx+1
+      do j=2,ny+1
         rho(i,j)=exp(-(i_to_x(i,nx)/0.1)*(i_to_x(i,nx)/0.1)&
         -(j_to_y(j,ny)/0.1)*(j_to_y(j,ny)/0.1))
       end do
@@ -62,8 +74,8 @@ program main
     p_y = 0_real64
 
   else if(problem == "double") then
-    do i=2,nx-1
-      do j=2,ny-1
+    do i=2,nx+1
+      do j=2,ny+1
         rho(i,j)=exp(-((i_to_x(i,nx)+0.25)/0.1)*((i_to_x(i,nx)+0.25)/0.1)&
         -((j_to_y(j,ny)+0.25)/0.1)*((j_to_y(j,ny)+0.25)/0.1))+exp(-((i_to_x(i,nx)&
         -0.75)/0.2)*((i_to_x(i,nx)-0.75)/0.2)-((j_to_y(j,ny)-0.75)/0.2)*((j_to_y(j,ny)-0.75)/0.2))
@@ -79,12 +91,25 @@ program main
   end if
 
 
-  !need put the program together from modules
-  call write_array(rho,rho,rho,rho,rho,rho,rho,"rho_test")
 
-  !call calc_forces(phi, nx, ny, dx, dy)
 
-  !call velocity_verlet(E_x, E_y, dx, dy, v_x, v_y, p_x, p_y)
+  errors = 1
+  do while(errors > 0.0001)
+    call run_gs(phi,rho,dx,dy)
+    out_etot = e_tot(phi,rho,dx,dy)
+    out_d_rms = d_rms(phi,dx,dy)
+    errors = out_etot/out_d_rms
+    !print *, errors
+  end do
+  print *, "Successfully converged"
+
+  call calc_forces(E_x, E_y, phi, nx, ny, dx, dy)
+  call velocity_verlet(E_x, E_y, dx, dy, v_x, v_y, p_x, p_y, part_hist, vel_hist, acc_hist)
+
+
+  call write_array(phi(2:nx+1,2:ny+1),rho(2:nx+1,2:ny+1),E_x,E_Y,part_hist,vel_hist,acc_hist,"rho_test")
+
+
 
   ! TODO Write to netcdf
   ! TODO Helper module

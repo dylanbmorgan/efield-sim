@@ -7,7 +7,7 @@ CONTAINS
   ! Runs a single iteration of the gauss_seidel method
   ! For usage of this ini conjunction with gauss_seidel_errors look at gs_test
   SUBROUTINE run_gs(phi, rho, dx, dy)
-    REAL(KIND=REAL64), DIMENSION(:,:), INTENT(INOUT) :: phi
+    REAL(KIND=REAL64), DIMENSION(:,:), INTENT(OUT) :: phi
     REAL(KIND=REAL64), DIMENSION(:,:), INTENT(IN) :: rho
     REAL(KIND=REAL64), INTENT(IN) :: dx,dy
     INTEGER, DIMENSION(2) ::  dims

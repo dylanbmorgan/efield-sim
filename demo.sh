@@ -35,4 +35,4 @@ $cf $fflags -J$src $program_files $flibs -o $comp_file -I$bin
 
 # Run
 $comp_file nx=100 ny=100 problem="single"
-python $bin/visualise.py
+$bin/visualise.py

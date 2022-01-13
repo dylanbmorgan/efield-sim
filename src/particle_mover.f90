@@ -32,7 +32,7 @@ contains
     real(dp), intent(in) :: dx, dy
     integer :: iters, cell_pos_x, cell_pos_y, time_step
 
-    iters = 10000  ! Number of iterations
+    iters = 1000  ! Number of iterations
     dt = 0.01_dp  ! Time step
     q = -1.0_dp  ! Charge
 

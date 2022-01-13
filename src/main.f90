@@ -116,7 +116,7 @@ program main
 
   !writing to a file
   call write_array(phi(2:nx + 1, 2:ny + 1), rho(2:nx + 1, 2:ny + 1), E_x, E_Y, part_hist &
-  , vel_hist, acc_hist, "rho_test")
+  , vel_hist, acc_hist, "output.nc")
 
 
 end program main

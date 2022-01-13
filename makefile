@@ -1,5 +1,5 @@
 make:
-	gfortran src/gauss-seidel_errors.f90 src/gauss_seidel.f90 src/write_netcdf.f90 src/command_line.f90 src/useful_funcs.f90 src/main.f90 -o bin/e_sim `nf-config --fflags --flibs`
+	gfortran -Wall -Wextra -pedantic src/gauss-seidel_errors.f90 src/particle_mover.f90 src/gauss_seidel.f90 src/write_netcdf.f90 src/command_line.f90 src/useful_funcs.f90 src/main.f90 -o bin/e_sim `nf-config --fflags --flibs`
 	./bin/e_sim nx=1000 ny=1000 problem="double"
 	python bin/visualise.py
 test_gs:

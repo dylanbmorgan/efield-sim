@@ -23,7 +23,7 @@ program main
 
   if(.not. success) then
     print*, "failed to read nx"
-    return
+    stop
   end if
 
 
@@ -31,14 +31,14 @@ program main
 
   if(.not. success) then
     print*, "failed to read ny"
-    return
+    stop
   end if
 
   success = get_arg("problem", problem)
 
   if(.not. success) then
     print*, "failed to read problem"
-    return
+    stop
   end if
 
   allocate(rho(nx + 2,ny + 2))
@@ -75,7 +75,7 @@ program main
     p_y = 0.5_real64
   else
     print*, "problem was not recognised"
-    return
+    stop
   end if
 
 

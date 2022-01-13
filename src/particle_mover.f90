@@ -45,8 +45,8 @@ contains
     q = -1.0_dp  ! Charge
 
     ! Find initial cell position
-    cell_pos_x = floor((p_x - 1.0_dp) / dx) + 1.0_dp
-    cell_pos_y = floor((p_y - 1.0_dp) / dy) + 1.0_dp
+    cell_pos_x = floor((p_x - 1.0_dp) / dx) + 1
+    cell_pos_y = floor((p_y - 1.0_dp) / dy) + 1
 
     ! Lorentz force equation
     ! The field is taken at the location of the particle

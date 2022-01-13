@@ -1,48 +1,50 @@
-MODULE gauss_seidel_errors
-    USE ISO_FORTRAN_ENV
-    IMPLICIT NONE
+module gauss_seidel_errors
+    use iso_fortran_env, dp => real64
+    implicit none
 
+! These functions are used to calculate the error on a given gauss seidel iteration.
 
-CONTAINS
-    FUNCTION e_tot(phi, rho, dx, dy)
-        REAL(REAL64), INTENT(IN), DIMENSION(:,:) :: phi, rho
-        REAL(REAL64), INTENT(IN) :: dx, dy
-        REAL(REAL64) :: e_tot
-        INTEGER, DIMENSION(2) :: shape_phi
-        INTEGER :: i, j
+contains
+    function e_tot(phi, rho, dx, dy)
+        real(dp), intent(in), dimension(:,:) :: phi, rho
+        real(dp), intent(in) :: dx, dy
+        real(dp) :: e_tot
+        integer, dimension(2) :: shape_phi
+        integer :: i, j
 
-        shape_phi = SHAPE(phi)
+        shape_phi = shape(phi)
 
-        DO i = 2, shape_phi(1)-1
-            DO j = 2, shape_phi(2)-1
-                e_tot = e_tot + ABS((phi(i-1,j)-2*phi(i,j)+phi(i+1,j))/(dx*dx) + &
-                (phi(i,j-1)-2*phi(i,j)+phi(i,j+1))/(dy*dy) - rho(i,j))
-            END DO
-        END DO
+        do i = 2, shape_phi(1)-1
+            do j = 2, shape_phi(2)-1
+                e_tot = e_tot + abs((phi(i - 1, j) - 2.0_dp * phi(i, j) + phi(i + 1, j)) / (dx * dx)&
+                +(phi(i, j - 1) - 2.0_dp * phi(i, j) + phi(i, j + 1)) / (dy * dy) - rho(i, j))
+            end do
+        end do
 
-    END FUNCTION e_tot
+    end function e_tot
 
-    FUNCTION d_rms(phi, dx, dy)
-        REAL(REAL64), INTENT(IN), DIMENSION(:,:) :: phi
-        REAL(REAL64), INTENT(IN) :: dx, dy
-        REAL(REAL64) :: d_rms, N
-        INTEGER, DIMENSION(2) :: shape_phi
-        INTEGER :: i, j
+    function d_rms(phi, dx, dy)
+        real(dp), intent(in), dimension(:,:) :: phi
+        real(dp), intent(in) :: dx, dy
+        real(dp) :: d_rms, n
+        integer, dimension(2) :: shape_phi
+        integer :: i, j
 
-        shape_phi = SHAPE(phi)
+        shape_phi = shape(phi)
 
-        N = shape_phi(1)*shape_phi(2)
+        n = shape_phi(1)*shape_phi(2)
 
-        DO i = 2, shape_phi(1)-1
-            DO j = 2, shape_phi(2)-1
-                d_rms = d_rms + ((phi(i-1,j)-2*phi(i,j)+phi(i+1,j))/(dx*dx) + &
-                (phi(i,j-1)-2*phi(i,j)+phi(i,j+1))/(dy*dy))*((phi(i-1,j)-2*phi(i,j)+phi(i+1,j))/(dx*dx) + &
-                (phi(i,j-1)-2*phi(i,j)+phi(i,j+1))/(dy*dy))
-            END DO
-        END DO
+        do i = 2, shape_phi(1)-1
+            do j = 2, shape_phi(2)-1
+                d_rms = d_rms + ((phi(i - 1, j) - 2.0_dp * phi(i, j) + phi(i + 1, j)) / (dx * dx) + &
+                (phi(i, j - 1) - 2.0_dp * phi(i, j) + phi(i, j + 1)) / (dy * dy)) * ((phi(i - 1, j) - &
+                2.0_dp * phi(i, j) + phi(i + 1, j)) / (dx * dx) + &
+                (phi(i, j - 1) - 2.0_dp * phi(i, j) + phi(i, j + 1)) / (dy * dy))
+            end do
+        end do
 
-        d_rms = SQRT(1/N * d_rms)
+        d_rms = sqrt(1.0_dp / n * d_rms)
 
-    END FUNCTION d_rms
+    end function d_rms
 
-END MODULE gauss_seidel_errors
+end module gauss_seidel_errors

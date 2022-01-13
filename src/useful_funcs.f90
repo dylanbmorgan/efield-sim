@@ -1,17 +1,17 @@
-MODULE useful_funcs
-    USE ISO_FORTRAN_ENV
-    IMPLICIT NONE
+module useful_funcs
+    use iso_fortran_env, dp => real64
+    implicit none
 
-CONTAINS
-    FUNCTION i_to_x(i, nx) RESULT(x)
-        INTEGER, INTENT(IN) :: i, nx
-        REAL(REAL64) :: x
-        x = 2.0*((i-2.0)/(nx-1.0))-1.0
-    END FUNCTION i_to_x
+contains
+    function i_to_x(i, nx) result(x)
+        integer, intent(in) :: i, nx
+        real(dp) :: x
+        x = 2.0_dp*((i-2.0_dp)/(nx-1.0_dp))-1.0_dp
+    end function i_to_x
 
-    FUNCTION j_to_y(j, ny) RESULT(y)
-        INTEGER, INTENT(IN) :: j, ny
-        REAL(REAL64) :: y
-        y = -(2.0*((j-2.0)/(ny-1.0))-1.0)
-    END FUNCTION j_to_y
-END MODULE useful_funcs
+    function j_to_y(j, ny) result(y)
+        integer, intent(in) :: j, ny
+        real(dp) :: y
+        y = -(2.0_dp*((j-2.0_dp)/(ny-1.0_dp))-1.0_dp)
+    end function j_to_y
+end module useful_funcs

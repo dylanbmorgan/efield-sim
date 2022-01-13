@@ -1,29 +1,29 @@
-PROGRAM gs_test
-    USE ISO_FORTRAN_ENV
-    USE write_netcdf
-    IMPLICIT NONE
+program gs_test
+    use iso_fortran_env, dp => real64
+    use write_netcdf
+    implicit none
 
-    REAL(KIND=REAL64), DIMENSION(:,:), ALLOCATABLE :: phi, rho, E_x, E_y, a, r, v
-    REAL(KIND=REAL64) :: out_etot, out_d_rms
-    REAL(KIND=REAL64) :: dx = 0.4_REAL64,dy = 0.4_REAL64
-    REAL(KIND=REAL64) :: errors
-    ALLOCATE(phi(5,5))
-    ALLOCATE(rho(5,5))
-    ALLOCATE(E_x(10,10))
-    ALLOCATE(E_y(12,22))
-    ALLOCATE(a(13,2))
-    ALLOCATE(r(13,2))
-    ALLOCATE(v(13,2))
-    ! Create dummy variables to write
+    real(dp), dimension(:,:), allocatable :: phi, rho, e_x, e_y, a, r, v
+    real(dp) :: out_etot, out_d_rms
+    real(dp) :: dx = 0.4_dp, dy = 0.4_dp
+    real(dp) :: errors
+    allocate(phi(5, 5))
+    allocate(rho(5, 5))
+    allocate(e_x(10, 10))
+    allocate(e_y(12, 22))
+    allocate(a(13, 2))
+    allocate(r(13, 2))
+    allocate(v(13, 2))
+    ! create dummy variables to write
     phi = 10
     rho = 2
-    E_x = 1.4_REAL64
-    E_y = 0.01_REAL64
+    e_x = 1.4_real64
+    e_y = 0.01_real64
     a = 1
     r = 23
     v = 1
 
-    !Call the write function as follows
-    call write_array(phi, rho, E_x, E_y, r, v, a, "Test_Nc")
+    !call the write function as follows
+    call write_array(phi, rho, e_x, e_y, r, v, a, "test_nc")
 
-END PROGRAM gs_test
+end program gs_test

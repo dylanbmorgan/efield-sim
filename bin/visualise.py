@@ -12,12 +12,10 @@ E_x_grid_data = dataset["e_x_grid_data"][:]
 E_y_grid_data = dataset["e_y_grid_data"][:]
 r_hist = dataset["r_hist"][:]
 
-
-plt.show()
-
 fig, axs = plt.subplots(3,figsize=(6,12), gridspec_kw={'height_ratios': [1,1 ,2]})
 fig.tight_layout()
-fig.canvas.set_window_title("E-Field Sim")
+
+fig.canvas.manager.set_window_title("E-Field Sim")
 
 im = axs[0].imshow(rho_grid_data)
 axs[0].title.set_text("Initial Charge Density")

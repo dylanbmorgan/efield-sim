@@ -16,7 +16,7 @@ compile() {
 
   echo "Compiling..."
 
-  comp_file="./bin/esim"
+  comp_file="./bin/esim"  # Compile location and file name
 
   program_files="./src/gauss-seidel_errors.f90 ./src/gauss_seidel.f90 \
      ./src/write_netcdf.f90 ./src/command_line.f90 ./src/useful_funcs.f90 \
@@ -38,7 +38,7 @@ run() {
 
   echo "Running..."
 
-  $comp_file $init_state $nx $ny 
+  $comp_file $problem $nx $ny
 
   # Check if netcdf file is present 
   if [[ -e "./output.nc" ]]; then 
@@ -54,7 +54,7 @@ run() {
 if [[ $# -eq 0 ]]; then
   # Default args if none are given
   cf="gfortran -g -std=f2008"
-  init_state="problem=single"
+  problem="problem=single"
   nx="nx=100"
   ny="ny=100"
 
@@ -68,18 +68,18 @@ if [[ $# -eq 0 ]]; then
 
 elif [[ $# -eq 1 ]]; then
 
-  if [[ $1 -eq "--compile" ]] || [[ $1 -eq "-c" ]]; then
+  if [[ $1 == "--compile" ]] || [[ $1 == "-c" ]]; then
     # Compile without running
     cf="gfortran -g -std=f2008"
     compile
   else
-    echo "The wrong number of arguments were used."
+    echo "Incorrect arguments were used."
     echo "Please check the README for how to use this script."
     exit 0
   fi
 
 elif [[ $# -eq 3 ]] || [[ $# -eq 4 ]]; then
-  init_state=$1
+  problem=$1
   nx=$2
   ny=$3
 
@@ -90,30 +90,34 @@ elif [[ $# -eq 3 ]] || [[ $# -eq 4 ]]; then
   elif [[ $4 == "--run" ]] || [[ $4 == "-r" ]]; then
     # Run without compiling
 
-      if [[ ! -e "./bin/esim" ]] || [[ ! -e "./src/*.mod" ]]; then
-        # Catch if program hasn't been compiled
-        echo "The program hasn't yet been compiled!"
-        read -p "Would you like to compile and run it now? (y/n): " usr_inp
+    if [[ ! -e "./bin/esim" ]] || [[ ! -e "./src/*.mod" ]]; then
+      # Catch if program hasn't been compiled
+      echo "The program hasn't yet been compiled!"
+      read -p "Would you like to compile and run it now? (y/n): " usr_inp
 
-          cf="gfortran -g -std=f2008"
-          compile
-          run
-          exit 0
-        elif [[ $usr_inp == "n" ]]; then
-          echo "Exiting now..."
-          exit 0
-        else
-          echo "Invalid input. Exiting now..."
-          exit 0
-        fi
-
+      if [[ $usr_inp == "y" ]]; then
+        cf="gfortran -g -std=f2008"
+        compile
+        run
+        exit 0
+      elif [[ $usr_inp == "n" ]]; then
+        echo "Exiting now..."
+        exit 0
+      else
+        echo "Invalid input. Exiting now..."
+        exit 0
       fi
 
-    cf="gfortran -g -std=f2008"
-    comp_file="./bin/esim"  # This has to be defined again
-    run
-    exit 0
+    else
+      # Run if program has already been compiled
+      cf="gfortran -g -std=f2008"
+      comp_file="./bin/esim"  # This has to be defined again
+      run
+      exit 0
+    fi
+
   else
+    # Run as normal with usr defined parameters
     cf="gfortran -g -std=f2008"
   fi
 
@@ -121,7 +125,8 @@ elif [[ $# -eq 3 ]] || [[ $# -eq 4 ]]; then
   run
 
 else
-  echo "The wrong number of arguments were used. Please check the README for"\
-    "how to use this script."
+  # Catcher if incorrect args used
+  echo "Incorrect arguments were used."
+  echo "Please check the README for how to use this script."
   exit 0
 fi

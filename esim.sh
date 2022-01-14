@@ -89,6 +89,26 @@ elif [[ $# -eq 3 ]] || [[ $# -eq 4 ]]; then
       -pedantic -fbacktrace"
   elif [[ $4 == "--run" ]] || [[ $4 == "-r" ]]; then
     # Run without compiling
+
+      if [[ ! -e "./bin/esim" ]] || [[ ! -e "./src/*.mod" ]]; then
+        # Catch if program hasn't been compiled
+        echo "The program hasn't yet been compiled!"
+        read -p "Would you like to compile and run it now? (y/n): " usr_inp
+
+          cf="gfortran -g -std=f2008"
+          compile
+          run
+          exit 0
+        elif [[ $usr_inp == "n" ]]; then
+          echo "Exiting now..."
+          exit 0
+        else
+          echo "Invalid input. Exiting now..."
+          exit 0
+        fi
+
+      fi
+
     cf="gfortran -g -std=f2008"
     comp_file="./bin/esim"  # This has to be defined again
     run

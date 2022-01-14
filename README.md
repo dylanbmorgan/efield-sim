@@ -1,24 +1,42 @@
 # EField-Sim
-Miniproject assignment for PX913 as part of HetSys CDT at the University of Warwick. This program simulates the movement of a particle through an electric field that the particle doesn't influence.
+Miniproject assignment for PX913 as part of HetSys CDT at the University of Warwick. This program simulates the movement of a particle through an electric field 
+
+## Dependencies
+The following dependencies are required to install/compile the program. These are:
+
+- [FORTRAN](https://fortran-lang.org/) (Specifically the 2008 standard)
+- [GNU Fortran](https://gcc.gnu.org/fortran/)
+- [Python 3](https://www.python.downloads/org/)
+- [NetCDF4](https://www.unidata.ucar.edu/software/netcdf/) (Additionally for python)
+- [matplotlib](https://matplotlib.org/)
 
 ## Install and Compile 
 This can be installed on any system with git installed using the command:
 
 `git clone https://github.com/dylanbmorgan/efield-sim` 
 
-Compilation and running the program is handled by the bash shell script `esim.sh`. To compile the program: 
+Compilation of EField-Sim is handled by the bash shell script `esim.sh`. To compile the program: 
 
 `esim.sh -c`
 
 ## Usage
-When running the program, there are 3 different initialisation states that can be run. These are 'null', 'single', and 'double'. These represent...
-Additionally, the size of the domain for the movement of the particle can be changed by setting the parameters 'nx' and 'ny'. If `esim.sh` is run without any parameters, the default behaviour of these are both set as 1000 with the 'single' initialisation state.
+This program should not be interacted with through any other means than the `esim.sh`, which handles everything for the end user. A number of flags can be supplied to the shell script when it is invoked to alter the output. In all cases, 1000 time steps are used and the time step (dt) = 0.01. 
 
-The syntax for setting these parameters is outlined as follows: 
+Firstly, ensure you are in the cloned repository; `cd ./efield-sim`
 
-- To set the initialisation state:
-    - `esim.sh -[state]`, where [state] can be 'null', 'single', or 'double'
+The possible ways to invoke the script are as follows: 
+- `esim.sh` (no flags): runs the program with the following 'default' parameters:
+  - `problem=single nx=100 ny=100`
 
+- `esim.sh --compile` (or `-c`): compile EField-Sim without running it. 
+
+- `esim.sh problem=<problem> nx=<grid x-length> ny=<grid y-length>`: parameters which can be customised:
+  - `problem` = 'null', 'single', or 'double'
+  - `nx` and `ny` = any positive integer. Note that beyond 1000, the calculation rapidly becomes prohibitively slow!
+  
+- `esim.sh problem=<problem> nx=<grid x-length> ny=<grid y-length> --run` (or `-r`): run the program without compiling it
+
+Note that the flags have to be specified in this order and cannot be rearranged.
 
 ## Contributors 
 Dylan Morgan, Matyas Parrag, and Jeremy Thorn

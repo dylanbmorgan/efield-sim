@@ -90,7 +90,7 @@ elif [[ $# -eq 3 ]] || [[ $# -eq 4 ]]; then
   elif [[ $4 == "--run" ]] || [[ $4 == "-r" ]]; then
     # Run without compiling
 
-    if [[ ! -e "./bin/esim" ]] || [[ ! -e "./src/*.mod" ]]; then
+    if [[ ! -e "./bin/esim" ]]; then
       # Catch if program hasn't been compiled
       echo "The program hasn't yet been compiled!"
       read -p "Would you like to compile and run it now? (y/n): " usr_inp

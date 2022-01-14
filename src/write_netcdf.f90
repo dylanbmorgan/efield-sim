@@ -34,8 +34,6 @@ module write_netcdf
             sizes(11:12) = shape(v)
             sizes(13:14) = shape(a)
 
-            print*,sizes
-
             ! create the file, overwriting if it exists
             ierr = nf90_create(filename, nf90_clobber, file_id)
 

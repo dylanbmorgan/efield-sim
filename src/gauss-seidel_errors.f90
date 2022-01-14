@@ -36,7 +36,7 @@ contains
         integer :: i, j
 
         shape_phi = shape(phi)
-
+        
         n = shape_phi(1)*shape_phi(2)
 
         do i = 2, shape_phi(1)-1

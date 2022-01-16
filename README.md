@@ -4,7 +4,6 @@ Miniproject assignment for PX913 as part of HetSys CDT at the University of Warw
 ## Dependencies
 The following dependencies are required to install/compile the program. These are:
 
-- [FORTRAN](https://fortran-lang.org/) (Specifically the 2008 standard)
 - [GNU Fortran](https://gcc.gnu.org/fortran/)
 - [Python 3](https://www.python.downloads/org/)
 - [NetCDF4](https://www.unidata.ucar.edu/software/netcdf/) (Additionally for python)

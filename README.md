@@ -6,7 +6,7 @@ The following dependencies are required to install/compile the program. These ar
 
 - [GNU Fortran](https://gcc.gnu.org/fortran/)
 - [Python 3](https://www.python.downloads/org/)
-- [NetCDF4](https://www.unidata.ucar.edu/software/netcdf/) (Additionally for python)
+- [NetCDF4](https://www.unidata.ucar.edu/software/netcdf/) (as well as the [python library](https://pypi.org/project/netCDF4/) for it)
 - [matplotlib](https://matplotlib.org/)
 
 ## Install and Compile 
